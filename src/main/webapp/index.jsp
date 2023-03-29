@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h2>Index</h2>
+	<h2>Óla</h2>
 </body>
 </html>
