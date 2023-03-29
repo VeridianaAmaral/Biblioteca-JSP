@@ -11,14 +11,14 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/jquery-3.6.0-dist/jquery-3.6.0.min.js"></script>
 <script type="text/javascript"
-	src="${pageContext.request.contextPath}/resources/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script>
+	src="${pageContext.request.contextPath}/resources/bootstrap-5.1.3-dist/js/bootstrap.min.js"></script> 
 </head>
 <body>
 	<jsp:include page="/publica/publica-nav.jsp"></jsp:include>
 	<div class="container">
 		<div class="row">
 			<div class="col">
-				<h2>Index</h2>
+				<h2>Cadastro de usuário</h2>
 			</div>
 		</div>
 	</div>
