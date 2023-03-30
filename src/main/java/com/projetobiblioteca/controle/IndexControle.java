@@ -2,6 +2,7 @@ package com.projetobiblioteca.controle;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.projetobiblioteca.controle.util.ManipulacaoData;
 import com.projetobiblioteca.dao.util.Conexao;
+import com.projetobiblioteca.modelo.Usuario;
 
 /**
  * Servlet implementation class IndexControle
@@ -38,6 +41,9 @@ public class IndexControle extends HttpServlet {
 			case "novo":
 				novoUsuario(request, response);
 				break;
+			case "inserir":
+				gravarUsuario(request, response);
+			break;
 			}
 		} catch (Exception ex) {
 			throw new ServletException(ex);
@@ -47,16 +53,27 @@ public class IndexControle extends HttpServlet {
 	
 	private void novoUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 		
-		Connection conexaoJDBC = Conexao.getConexao();
-		//apenas para teste
-		if (conexaoJDBC != null) {
-			System.out.println("Conexão Aberta");
-		}else {
-			System.out.println("Sem conexão");
-		}
-		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("publica/publica-novo-usuario.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	private void gravarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+		
+		String nome = request.getParameter("nome");
+		String cpf = request.getParameter("cpf");
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		String login = request.getParameter("login");
+		String data = request.getParameter("nascimento");
+		
+		ManipulacaoData manipulacaoData = new ManipulacaoData();
+		Date dataNascimento = manipulacaoData.converterStringData(data);
+		
+		Usuario usuario = new Usuario(nome, cpf, dataNascimento, email, password, login, false);
+		
+		System.out.println(usuario);
+		
+		
 	}
 
 }
