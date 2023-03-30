@@ -2,6 +2,7 @@ package com.projetobiblioteca.controle;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.projetobiblioteca.controle.util.ManipulacaoData;
+import com.projetobiblioteca.dao.UsuarioDAO;
 import com.projetobiblioteca.dao.util.Conexao;
 import com.projetobiblioteca.modelo.Usuario;
 
@@ -21,9 +23,15 @@ import com.projetobiblioteca.modelo.Usuario;
 @WebServlet("/publica")
 public class IndexControle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private UsuarioDAO usuarioDAO;
        
     public IndexControle() {
         super();
+    }
+    
+    public void init() {
+    	usuarioDAO = new UsuarioDAO();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -57,7 +65,7 @@ public class IndexControle extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
-	private void gravarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	private void gravarUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException{
 		
 		String nome = request.getParameter("nome");
 		String cpf = request.getParameter("cpf");
@@ -71,8 +79,11 @@ public class IndexControle extends HttpServlet {
 		
 		Usuario usuario = new Usuario(nome, cpf, dataNascimento, email, password, login, false);
 		
-		System.out.println(usuario);
+		Usuario usuarioGravado = usuarioDAO.inserirUsuario(usuario);
 		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("publica/publica-novo-usuario.jsp");
+		request.setAttribute("mensagem", "Usuário cadastrado com sucesso");
+		dispatcher.forward(request, response);
 		
 	}
 
