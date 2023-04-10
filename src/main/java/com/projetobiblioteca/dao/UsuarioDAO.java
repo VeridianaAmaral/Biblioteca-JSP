@@ -6,9 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.projetobiblioteca.dao.util.Conexao;
 import com.projetobiblioteca.modelo.Usuario;
+
+import br.edu.ifms.model.User;
 
 public class UsuarioDAO {
 	
@@ -55,6 +59,36 @@ public class UsuarioDAO {
 			usuario.setId(id);
 			return usuario;
 		
+	}
+	public List<Usuario> listUsers() throws SQLException {
+		
+		List<Usuario> userList = new ArrayList<Usuario>();
+		String query = "select * from usuario";
+		
+		conectar();
+		
+		Statement statement = connection.createStatement();
+		ResultSet result = statement.executeQuery(query);
+		
+		while(result.next()) {
+			long id = result.getLong("id");
+			String name = result.getString("nome");
+			String cpf = result.getString("cpf");
+			Date birthday = new Date(result.getDate("data_nascimento").getTime());
+			String email = result.getString("email");
+			String login = result.getString("login");
+			String password = result.getString("password");
+			boolean active = result.getBoolean("ativo");
+			
+			Usuario user = new Usuario(name, cpf, birthday, email, password, login, active);
+			user.setId(id);
+			userList.add(user);
+		}
+		result.close();
+		desconectar();
+		
+		
+		return userList;
 	}
 	
 }
