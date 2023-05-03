@@ -92,4 +92,20 @@ public class UsuarioDAO {
 		return listaUsuarios;
 	}
 
+	public boolean apagarUsuario(Usuario usuario) throws SQLException {
+        String sql = "DELETE FROM usuario where id = ?";
+        
+        conectar();
+         
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setLong(1, usuario.getId());
+         
+        boolean linhaApagada = statement.executeUpdate() > 0;
+        statement.close();
+        
+        desconectar();
+        
+        return linhaApagada;     
+   }
+
 }

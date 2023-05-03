@@ -46,6 +46,9 @@ public class AdminControle extends HttpServlet {
 			case "listar":
 				listarUsuario(request, response);
 				break;
+			case "apagar":
+				apagarUsuario(request, response);
+				break;
 
 			}
 		} catch (Exception ex) {
@@ -65,6 +68,20 @@ public class AdminControle extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher(path);
 
 		dispatcher.forward(request, response);
+	}
+
+	private void apagarUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+
+		long id = Long.parseLong(request.getParameter("id"));
+
+		Usuario usuario = new Usuario();
+		usuario.setId(id);
+		usuarioDAO.apagarUsuario(usuario);
+
+		String path = request.getContextPath() + request.getServletPath() + "?acao=listar";
+		response.sendRedirect(path);
+
 	}
 
 }
